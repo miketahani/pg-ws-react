@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { UserList } from './UserList'
 import { DeleteUserModal } from './DeleteUserModal'
 
-import { fetchPost } from '../../util/fetchPost'
 import { useWebSocket } from '../../util/useWebSocket'
 
 import { getUserList, removeUser } from '../../util/userActions'
 
-import { BASE_REST_API_URL, WS_NOTIFICATIONS_URL } from '../../config'
+import { WS_NOTIFICATIONS_URL } from '../../config'
 
 export function UserListWebsocket () {
   const [users, setUsers] = useState(null)

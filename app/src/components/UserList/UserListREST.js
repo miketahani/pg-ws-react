@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { UserList } from './UserList'
 
-import { getUserList, removeUser } from '../../util/userActions'
+import { getUserList } from '../../util/userActions'
 
 export function UserListREST () {
   const [users, setUsers] = useState(null)
