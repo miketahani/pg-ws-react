@@ -39,12 +39,6 @@ button {
   padding: 0.5em;
   border: none;
   cursor: pointer;
-
-  /* animation */
-  /*transition: 400ms box-shadow;*/
-}
-
-button:hover {
 }
 
 

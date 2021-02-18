@@ -23,18 +23,18 @@ export const ModalMessage = styled.div`
 `
 
 const CancelButton = styled(Button)`
-    font-size: 1.5em;
-    width: 100%;
-    color: #000;
-    background-color: #ccc;
+  font-size: 1.5em;
+  width: 100%;
+  color: #000;
+  background-color: #ccc;
 `
 
 const DeleteButton = styled(Button)`
-    font-size: 1.5em;
-    width: 100%;
-    text-transform: uppercase;
-    color: #fff;
-    background-color: #F46152;
+  font-size: 1.5em;
+  width: 100%;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: #F46152;
 `
 
 export const buttonComponents = {
