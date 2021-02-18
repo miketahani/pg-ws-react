@@ -1,7 +1,4 @@
-import React, { Component } from 'react'
-import moment from 'moment'
-
-import { getFormattedRetrieveDate } from '../../util/getFormattedRetrieveDate'
+import React, { useState, useRef } from 'react'
 
 import { DonutSpinner } from '../DonutSpinner'
 
@@ -16,99 +13,52 @@ import {
   RetrieveDate
 } from './styles.js'
 
-export class Notifications extends Component {
-  state = {
-    messages: [],
-    isConnected: false
-  }
-  websocket = null
+import { getFormattedRetrieveDate, getFormattedMessageRow } from '../../util/format'
+import { useWebSocket } from '../../util/useWebSocket'
 
-  componentDidMount () {
-    this.websocket = new WebSocket('ws://localhost:4000')
-    this.websocket.addEventListener('open', this.handleConnect)
-    this.websocket.addEventListener('message', this.handleMessage)
-  }
+import { WS_NOTIFICATIONS_URL } from '../../config'
 
-  componentWillUnmount () {
-    this.setState({ isConnected: false }, () => {
-      this.websocket.close()
-    })
+export function Notifications () {
+  const [messages, setMessages] = useState([])
+
+  const handleMessage = e => {
+    if (!e.data) return;
+
+    const payload = JSON.parse(JSON.parse(e.data).payload)
+    // chronological order
+    setMessages(prevMessages => [payload, ...prevMessages])
   }
 
-  handleConnect = () => {
-    this.setState({ isConnected: true })
-  }
+  const ws = useWebSocket(WS_NOTIFICATIONS_URL, handleMessage)
 
-  handleMessage = event => {
-    if (!event.data) {
-      return
-    }
+  if (ws.status !== WebSocket.OPEN) return <DonutSpinner />;
+  if (!messages.length) return 'No messages';
 
-    const data = JSON.parse(event.data)
-    const payload = JSON.parse(data.payload)
+  return (
+    <NotificationsContainer>
+      {messages.map((message, i) =>
+        <Message type={message.meta.type} key={i}>
+          <MessageHeader>
+            <MessageRow>
+              <Key>type</Key>
+              <Value>{message.meta.type}</Value>
+            </MessageRow>
 
-    console.log(data)
+            <MessageRow>
+              <Key>table</Key>
+              <Value>{message.meta.table}</Value>
+            </MessageRow>
+          </MessageHeader>
 
-    // chronilogical order
-    this.setState({ messages: [payload, ...this.state.messages] })
-  }
+          <MessageRawData>
+            {getFormattedMessageRow(message.row)}
+          </MessageRawData>
 
-  getFormattedMessageRow = row => {
-    const stringified = JSON.stringify(row, null, 2)
-    const display = stringified.length > 50
-      ? `${stringified.slice(0, 50 - 3)}...`
-      : stringified
-    return display
-  }
-
-  render () {
-    const { isConnected, messages } = this.state
-
-    if (!isConnected) {
-      return <DonutSpinner />
-    }
-
-    if (!messages.length) {
-      return 'No messages'
-    }
-
-    return (
-      <NotificationsContainer>
-        {messages.map((message, i) => console.log(message.meta) ||
-          <Message type={message.meta.type} key={i}>
-            <MessageHeader>
-              <MessageRow>
-                <Key>type</Key>
-                <Value>{message.meta.type}</Value>
-              </MessageRow>
-
-              <MessageRow>
-                <Key>table</Key>
-                <Value>{message.meta.table}</Value>
-              </MessageRow>
-            </MessageHeader>
-
-            {/*
-            <MessageRawData>
-              {Object.entries(message.row).map(([key, value]) =>
-                <div key={key}>
-                  <Key>{key}</Key>
-                  <Value>{value}</Value>
-                </div>
-              )}
-            </MessageRawData>
-            */}
-
-            <MessageRawData>
-              {this.getFormattedMessageRow(message.row)}
-            </MessageRawData>
-
-            <RetrieveDate>
-              {getFormattedRetrieveDate(message.meta.retrieveDate)}
-            </RetrieveDate>
-          </Message>
-        )}
-      </NotificationsContainer>
-    )
-  }
+          <RetrieveDate>
+            {getFormattedRetrieveDate(message.meta.retrieveDate)}
+          </RetrieveDate>
+        </Message>
+      )}
+    </NotificationsContainer>
+  )
 }
