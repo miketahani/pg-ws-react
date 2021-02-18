@@ -11,7 +11,6 @@ const NOOP = () => {};
 const baseApiUrl = 'http://localhost:5000'
 
 export function UserListREST () {
-  const [needsUpdate, setNeedsUpdate] = useState(true)
   const [users, setUsers] = useState(null)
 
   const requestUserList = async () => {
@@ -19,7 +18,6 @@ export function UserListREST () {
       const res = await fetch(`${baseApiUrl}/user/list`)
       const users = await res.json()
       users.rows = users.rows.sort((a, b) => b.id - a.id)
-      setNeedsUpdate(false)
       setUsers(users)
     } catch (e) {
       setUsers(null)
