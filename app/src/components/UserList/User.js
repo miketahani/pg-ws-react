@@ -2,6 +2,7 @@ import React from 'react'
 
 import {
   UserContainer,
+  UserInfo,
   UserName,
   UserID
 } from './styles'
@@ -17,8 +18,10 @@ export function User ({
 }) {
   return (
     <UserContainer>
-      <UserName>{name}</UserName>
-      <UserID>id: {id}</UserID>
+      <UserInfo>
+        <UserName>{name}</UserName>
+        <UserID>id: {id}</UserID>
+      </UserInfo>
 
       {onRemoveUser &&
         <div><CloseButton onClick={() => onRemoveUser(id)} /></div>

@@ -24,14 +24,17 @@ export const UserContainer = styled.div`
   }
 `
 
-export const UserName = styled.div`
-  width: 33%;
-  font-weight: bold;
-  font-size: 1.25em;
+export const UserInfo = styled.div`
+  width: 66%;
 `
 
-export const UserID = styled.div`
-  width: 33%;
+export const UserName = styled.span`
+  font-weight: bold;
+  font-size: 1.25em;
+  margin-right: 0.5em;
+`
+
+export const UserID = styled.span`
   font-size: 0.8em;
   font-style: italic;
 `
