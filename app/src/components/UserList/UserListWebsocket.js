@@ -7,25 +7,28 @@ import { DeleteUserModal } from './DeleteUserModal'
 import { fetchPost } from '../../util/fetchPost'
 import { useWebSocket } from '../../util/useWebSocket'
 
-import { BASE_REST_API_URL, WS_HYDRATION_URL } from '../../config'
+import { getUserList, removeUser } from '../../util/userActions'
+
+import { BASE_REST_API_URL, WS_NOTIFICATIONS_URL } from '../../config'
 
 export function UserListWebsocket () {
-  const [needsUpdate, setNeedsUpdate] = useState(true)
   const [users, setUsers] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-  const handleMessage = _msg => {
-    const msg = JSON.parse(_msg.data)
-    const payload = JSON.parse(msg.payload)
-    payload.rows = payload.rows.sort((a, b) => b.id - a.id)
-    setUsers(payload)
-  }
 
-  const ws = useWebSocket(WS_HYDRATION_URL, handleMessage)
+  // Reload the user list when a change is detected
+  const handleNotification = async () => setUsers(await getUserList())
+  // Subscribe to updates
+  const ws = useWebSocket(WS_NOTIFICATIONS_URL, handleNotification)
+
+  useEffect(() => {
+    // Load initial user list
+    (async () => setUsers(await getUserList()))()
+  }, [])
 
   const handleRemoveUser = async userId => {
     try {
-      await fetchPost(`${BASE_REST_API_URL}/user/remove`, {id: userId})
+      await removeUser(userId)
       setModalOpen(false)
     } catch (e) {
       console.error(e)
@@ -36,8 +39,8 @@ export function UserListWebsocket () {
     setModalOpen({
       userId,
       buttons: [
-        ['Cancel', () => setModalOpen(false)],
-        ['DELETE', () => handleRemoveUser(userId)]
+        ['DELETE', () => handleRemoveUser(userId)],
+        ['Cancel', () => setModalOpen(false)]
       ]
     })
   }
