@@ -33,7 +33,7 @@ export function UserListWebsocket () {
   // Subscribe to updates and reload the user list when a change is detected
   const ws = useWebSocket(WS_NOTIFICATIONS_URL, requestUserList)
 
-  // Load initial user list
+  // Hydrate initial user list
   useEffect(() => { requestUserList() }, [])
 
   const showDeleteWarningModal = userId => {
