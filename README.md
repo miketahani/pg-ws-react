@@ -8,7 +8,7 @@ Simple proof of concept (apologies for poor code quality and shortcuts) to get r
 
 Somewhat convoluted right now. I may bake this into a script at some point.
 
-- Start a postgres server. Your credentials will be read from the commandline:
+- Start a postgres server. Your credentials will be read from env vars:
 
 ```
 The default values for the environment variables used are:
