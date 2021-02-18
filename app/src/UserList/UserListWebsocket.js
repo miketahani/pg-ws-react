@@ -8,8 +8,7 @@ import { fetchPost } from '../util/fetchPost'
 
 import { useWebSocket } from './useWebSocket'
 
-const baseApiUrl = 'http://localhost:5000'
-const wssHydrateUrl = 'ws://localhost:4005'
+import { BASE_REST_API_URL, WS_HYDRATION_URL } from '../config'
 
 export function UserListWebsocket () {
   const [needsUpdate, setNeedsUpdate] = useState(true)
@@ -23,12 +22,15 @@ export function UserListWebsocket () {
     setUsers(payload)
   }
 
-  const ws = useWebSocket(wssHydrateUrl, handleMessage)
+  const ws = useWebSocket(WS_HYDRATION_URL, handleMessage)
 
-  const handleRemoveUser = userId => {
-    fetchPost(`${baseApiUrl}/user/remove`, {id: userId})
-      .then(() => setModalOpen(false))
-      .catch(e => console.error(e))
+  const handleRemoveUser = async userId => {
+    try {
+      await fetchPost(`${BASE_REST_API_URL}/user/remove`, {id: userId})
+      setModalOpen(false)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const showDeleteWarningModal = userId => {

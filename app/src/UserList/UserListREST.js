@@ -5,17 +5,16 @@ import { UserListHeader } from './UserListHeader'
 
 import { fetchPost } from '../util/fetchPost'
 
-// import './styles.css'
+import { BASE_REST_API_URL } from '../config'
 
 const NOOP = () => {};
-const baseApiUrl = 'http://localhost:5000'
 
 export function UserListREST () {
   const [users, setUsers] = useState(null)
 
   const requestUserList = async () => {
     try {
-      const res = await fetch(`${baseApiUrl}/user/list`)
+      const res = await fetch(`${BASE_REST_API_URL}/user/list`)
       const users = await res.json()
       users.rows = users.rows.sort((a, b) => b.id - a.id)
       setUsers(users)
@@ -26,7 +25,7 @@ export function UserListREST () {
 
   const handleRemoveUser = async userId => {
     try {
-      await fetchPost(`${baseApiUrl}/user/remove`, {id: userId})
+      await fetchPost(`${BASE_REST_API_URL}/user/remove`, {id: userId})
       await requestUserList()
     } catch (e) {
       console.error(e)
