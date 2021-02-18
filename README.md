@@ -1,3 +1,5 @@
+![](WATCHME.gif)
+
 # postgres (pg_notify) + websockets + React
 
 Simple proof of concept (apologies for poor code quality and shortcuts) to get realtime notifications from user actions that cause changes in a DB. Prototype for a project that was never released.
