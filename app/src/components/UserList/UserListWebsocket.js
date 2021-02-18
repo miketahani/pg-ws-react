@@ -15,25 +15,29 @@ export function UserListWebsocket () {
   const [users, setUsers] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-
-  // Reload the user list when a change is detected
-  const handleNotification = async () => setUsers(await getUserList())
-  // Subscribe to updates
-  const ws = useWebSocket(WS_NOTIFICATIONS_URL, handleNotification)
-
-  useEffect(() => {
-    // Load initial user list
-    (async () => setUsers(await getUserList()))()
-  }, [])
+  const requestUserList = async () => {
+    try {
+      setUsers(await getUserList())
+    } catch (e) {
+      setUsers(null)
+    }
+  }
 
   const handleRemoveUser = async userId => {
     try {
       await removeUser(userId)
+      await requestUserList()
       setModalOpen(false)
     } catch (e) {
       console.error(e)
     }
   }
+
+  // Subscribe to updates and reload the user list when a change is detected
+  const ws = useWebSocket(WS_NOTIFICATIONS_URL, requestUserList)
+
+  // Load initial user list
+  useEffect(() => { requestUserList() }, [])
 
   const showDeleteWarningModal = userId => {
     setModalOpen({
