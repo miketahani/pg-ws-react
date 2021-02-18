@@ -7,11 +7,10 @@
 // PGPORT=5432
 // (source: https://node-postgres.com/features/connecting)
 const { Pool, Client } = require('pg')
-const { NotificationServer, HydrationServer } = require('./wsServers')
+const { NotificationServer } = require('./wsServers')
 
 const pgClient = new Client()
 const notificationServer = new NotificationServer()
-const hydrationServer = new HydrationServer({ db: pgClient })
 
 pgClient.on('end', () => {
     process.exit()
@@ -37,7 +36,6 @@ function handlePGNotification (msg) {
   msg.payload = JSON.stringify(payload)
 
   notificationServer.updateClients(msg)
-  hydrationServer.updateClients()
 }
 
 async function cleanup () {
