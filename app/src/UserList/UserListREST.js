@@ -7,8 +7,6 @@ import { fetchPost } from '../util/fetchPost'
 
 import { BASE_REST_API_URL } from '../config'
 
-const NOOP = () => {};
-
 export function UserListREST () {
   const [users, setUsers] = useState(null)
 
@@ -53,7 +51,7 @@ export function UserListREST () {
       {!users || !users.rows.length && 'No users'}
 
       {users && users.rows.map(user =>
-        <User key={user.id} user={user} onRemoveUser={NOOP} />
+        <User key={user.id} user={user} />
       )}
     </div>
   )

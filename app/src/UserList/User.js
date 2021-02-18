@@ -19,7 +19,10 @@ export function User ({
     <UserContainer>
       <UserName>{name}</UserName>
       <UserID>id: {id}</UserID>
-      <div><CloseButton onClick={() => onRemoveUser(id)} /></div>
+
+      {onRemoveUser &&
+        <div><CloseButton onClick={() => onRemoveUser(id)} /></div>
+      }
     </UserContainer>
   )
 }
