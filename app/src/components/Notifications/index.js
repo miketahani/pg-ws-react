@@ -32,7 +32,8 @@ export function Notifications () {
   const ws = useWebSocket(WS_NOTIFICATIONS_URL, handleMessage)
 
   if (ws.status !== WebSocket.OPEN) return <DonutSpinner />;
-  if (!messages.length) return 'No messages';
+
+  if (!messages.length) return 'No messages yet';
 
   return (
     <NotificationsContainer>
