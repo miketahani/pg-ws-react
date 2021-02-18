@@ -9,6 +9,10 @@ export const getUserList = async () => {
   return users
 }
 
+export const addUser = async userName => {
+  await fetchPost(`${BASE_REST_API_URL}/user/add`, {username: userName})
+}
+
 export const removeUser = async userId => {
   await fetchPost(`${BASE_REST_API_URL}/user/remove`, {id: userId})
 }
