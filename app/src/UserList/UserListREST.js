@@ -14,37 +14,26 @@ export function UserListREST () {
   const [needsUpdate, setNeedsUpdate] = useState(true)
   const [users, setUsers] = useState(null)
 
-  const requestUserList = () => {
-    setNeedsUpdate(true)
+  const requestUserList = async () => {
+    try {
+      const res = await fetch(`${baseApiUrl}/user/list`)
+      const users = await res.json()
+      users.rows = users.rows.sort((a, b) => b.id - a.id)
+      setNeedsUpdate(false)
+      setUsers(users)
+    } catch (e) {
+      setUsers(null)
+    }
   }
 
-  const handleRemoveUser = userId => {
-    fetchPost(`${baseApiUrl}/user/remove`, {id: userId})
-      .then(requestUserList)
-      .catch(e => console.error(e))
+  const handleRemoveUser = async userId => {
+    try {
+      await fetchPost(`${baseApiUrl}/user/remove`, {id: userId})
+      await requestUserList()
+    } catch (e) {
+      console.error(e)
+    }
   }
-
-  useEffect(() => {
-    if (!needsUpdate) {
-      return
-    }
-
-    console.log('requesting user list')
-
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${baseApiUrl}/user/list`)
-        const users = await res.json()
-        users.rows = users.rows.sort((a, b) => b.id - a.id)
-        setNeedsUpdate(false)
-        setUsers(users)
-      } catch (e) {
-        setUsers(null)
-      }
-    }
-
-    fetchData()
-  }, [needsUpdate])
 
   useEffect(() => {
     window.addEventListener('focus', requestUserList)
@@ -52,6 +41,7 @@ export function UserListREST () {
   }, [])
 
   useEffect(() => {
+    requestUserList()
     let id = setInterval(requestUserList, 5000)
     return () => clearInterval(id)
   }, [])
