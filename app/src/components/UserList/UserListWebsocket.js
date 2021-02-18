@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { User } from './User'
-import { UserListHeader } from './UserListHeader'
+import { UserList } from './UserList'
 import { DeleteUserModal } from './DeleteUserModal'
 
 import { fetchPost } from '../../util/fetchPost'
@@ -26,7 +25,6 @@ export function UserListWebsocket () {
   const handleRemoveUser = async userId => {
     try {
       await removeUser(userId)
-      await requestUserList()
       setModalOpen(false)
     } catch (e) {
       console.error(e)
@@ -50,19 +48,14 @@ export function UserListWebsocket () {
   }
 
   return (
-    <div>
-      <UserListHeader
-        subtitle='push via websocket'
-        retrieveDate={users && users.meta.retrieveDate}
+    <>
+      <UserList
+        users={users}
+        subtitle="push via websocket"
+        onRemoveUser={showDeleteWarningModal}
       />
 
-      {!users || !users.rows.length && 'No users'}
-
-      {users && users.rows.map(user =>
-        <User key={user.id} user={user} onRemoveUser={showDeleteWarningModal} />
-      )}
-
       {!!modalOpen && <DeleteUserModal {...modalOpen} />}
-    </div>
+    </>
   )
 }

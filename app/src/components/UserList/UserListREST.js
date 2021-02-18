@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { User } from './User'
-import { UserListHeader } from './UserListHeader'
+import { UserList } from './UserList'
 
 import { getUserList, removeUser } from '../../util/userActions'
 
@@ -28,17 +27,6 @@ export function UserListREST () {
   }, [])
 
   return (
-    <div>
-      <UserListHeader
-        subtitle='poll via REST'
-        retrieveDate={users && users.meta.retrieveDate}
-      />
-
-      {!users || !users.rows.length && 'No users'}
-
-      {users && users.rows.map(user =>
-        <User user={user} key={user.id} />
-      )}
-    </div>
+    <UserList users={users} subtitle="poll via REST" />
   )
 }
