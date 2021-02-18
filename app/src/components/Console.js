@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { Button } from '../Button'
+import { Button } from './Button'
 
 import { fetchPost } from '../util/fetchPost'
 

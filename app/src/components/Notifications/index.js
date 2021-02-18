@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
-import { getFormattedRetrieveDate } from '../util/getFormattedRetrieveDate'
+import { getFormattedRetrieveDate } from '../../util/getFormattedRetrieveDate'
 
 import { DonutSpinner } from '../DonutSpinner'
 

@@ -4,11 +4,10 @@ import { User } from './User'
 import { UserListHeader } from './UserListHeader'
 import { DeleteUserModal } from './DeleteUserModal'
 
-import { fetchPost } from '../util/fetchPost'
+import { fetchPost } from '../../util/fetchPost'
+import { useWebSocket } from '../../util/useWebSocket'
 
-import { useWebSocket } from './useWebSocket'
-
-import { BASE_REST_API_URL, WS_HYDRATION_URL } from '../config'
+import { BASE_REST_API_URL, WS_HYDRATION_URL } from '../../config'
 
 export function UserListWebsocket () {
   const [needsUpdate, setNeedsUpdate] = useState(true)

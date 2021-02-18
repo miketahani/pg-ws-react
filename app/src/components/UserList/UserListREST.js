@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { User } from './User'
 import { UserListHeader } from './UserListHeader'
 
-import { fetchPost } from '../util/fetchPost'
+import { fetchPost } from '../../util/fetchPost'
 
-import { BASE_REST_API_URL } from '../config'
+import { BASE_REST_API_URL } from '../../config'
 
 export function UserListREST () {
   const [users, setUsers] = useState(null)

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { UserListHeaderContainer, UserListTimestamp } from './styles'
 
-import { getFormattedRetrieveDate } from '../util/getFormattedRetrieveDate'
+import { getFormattedRetrieveDate } from '../../util/getFormattedRetrieveDate'
 
 export function UserListHeader ({ retrieveDate, subtitle }) {
   const displayDate = retrieveDate

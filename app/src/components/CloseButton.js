@@ -1,4 +1,7 @@
+import React from 'react'
 import styled from 'styled-components'
+
+const CLOSE_SYMBOL = '✕'
 
 export const CloseButtonContainer = styled.div`
   border-radius: 50%;
@@ -24,3 +27,12 @@ export const CloseButtonContainer = styled.div`
     border: 1px solid #000;
   }
 `
+
+
+export function CloseButton (props) {
+  return (
+    <CloseButtonContainer {...props}>
+      {CLOSE_SYMBOL}
+    </CloseButtonContainer>
+  )
+}
