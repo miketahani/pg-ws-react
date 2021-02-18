@@ -3,19 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { User } from './User'
 import { UserListHeader } from './UserListHeader'
 
-import { fetchPost } from '../../util/fetchPost'
-
-import { BASE_REST_API_URL } from '../../config'
+import { getUserList, removeUser } from '../../util/userActions'
 
 export function UserListREST () {
   const [users, setUsers] = useState(null)
 
   const requestUserList = async () => {
     try {
-      const res = await fetch(`${BASE_REST_API_URL}/user/list`)
-      const users = await res.json()
-      users.rows = users.rows.sort((a, b) => b.id - a.id)
-      setUsers(users)
+      setUsers(await getUserList())
     } catch (e) {
       setUsers(null)
     }
@@ -23,7 +18,7 @@ export function UserListREST () {
 
   const handleRemoveUser = async userId => {
     try {
-      await fetchPost(`${BASE_REST_API_URL}/user/remove`, {id: userId})
+      await removeUser(userId)
       await requestUserList()
     } catch (e) {
       console.error(e)
