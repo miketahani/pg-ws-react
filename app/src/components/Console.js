@@ -3,11 +3,7 @@ import styled from 'styled-components'
 
 import { Button } from './Button'
 
-import { fetchPost } from '../util/fetchPost'
-
-// don't do name creation etc via websocket. create a REST API and only use
-// the websocket for completely necessary realtime stuff.
-const baseApiUrl = 'http://localhost:5000'
+import { addUser } from '../util/userActions'
 
 const SubmitButton = styled(Button)`
   background-color: #2EF240;
@@ -18,19 +14,6 @@ const SubmitButton = styled(Button)`
 export function Console () {
   const input = useRef(null)
 
-  const handleSubmitName = () => {
-    const username = input.current.value
-
-    if (!username) {
-      return
-    }
-
-    fetchPost(`${baseApiUrl}/user/add`, {username})
-      .then(res => console.log('success!'))
-      .catch(e => console.error(e))
-      .finally(clearInput)
-  }
-
   const clearInput = () => {
     input.current.value = ''
   }
@@ -40,6 +23,20 @@ export function Console () {
     if (e.key === 'Enter') {
       handleSubmitName()
     } else if (e.key === 'Escape') {
+      clearInput()
+    }
+  }
+
+  const handleSubmitName = async () => {
+    const username = input.current.value
+
+    if (!username) return;
+
+    try {
+      await addUser(username)
+    } catch (e) {
+      console.error(e)
+    } finally {
       clearInput()
     }
   }
