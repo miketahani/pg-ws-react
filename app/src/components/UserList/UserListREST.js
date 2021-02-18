@@ -16,15 +16,6 @@ export function UserListREST () {
     }
   }
 
-  const handleRemoveUser = async userId => {
-    try {
-      await removeUser(userId)
-      await requestUserList()
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
   useEffect(() => {
     window.addEventListener('focus', requestUserList)
     return () => window.removeEventListener('focus', requestUserList)
@@ -46,7 +37,7 @@ export function UserListREST () {
       {!users || !users.rows.length && 'No users'}
 
       {users && users.rows.map(user =>
-        <User key={user.id} user={user} />
+        <User user={user} key={user.id} />
       )}
     </div>
   )
