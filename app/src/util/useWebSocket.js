@@ -3,12 +3,19 @@ import React, { useRef, useState, useEffect } from 'react'
 export function useWebSocket (url, onMessage) {
   const ws = useRef()
   const [error, setError] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (ws.current) return;
 
-    const handleSocketOpen = () => setError(false)
-    const handleSocketError = error => setError(error)
+    const handleSocketOpen = () => {
+      setIsOpen(true)
+      setError(false)
+    }
+    const handleSocketError = error => {
+      setIsOpen(false)
+      setError(error)
+    }
 
     const socket = ws.current = new WebSocket(url)
     socket.addEventListener('open', handleSocketOpen)
@@ -31,7 +38,7 @@ export function useWebSocket (url, onMessage) {
   }, [onMessage])
 
   const send = message =>
-    ws.current?.readyState === WebSocket.OPEN && ws.current.send(message)
+    (ws.current?.readyState === WebSocket.OPEN) && ws.current.send(message)
 
   return {
     status: ws.current?.readyState ?? WebSocket.CONNECTING,
