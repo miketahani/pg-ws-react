@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 
 import { DonutSpinner } from '../DonutSpinner'
 
@@ -31,9 +31,11 @@ export function Notifications () {
 
   const ws = useWebSocket(WS_NOTIFICATIONS_URL, handleMessage)
 
-  if (ws.status !== WebSocket.OPEN) return <DonutSpinner />;
-
-  if (!messages.length) return 'No messages yet';
+  if (ws.status !== WebSocket.OPEN) {
+    return <DonutSpinner />
+  } else if (!messages.length) {
+    return 'No messages yet'
+  }
 
   return (
     <NotificationsContainer>
