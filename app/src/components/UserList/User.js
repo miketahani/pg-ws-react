@@ -24,7 +24,7 @@ export function User ({
       </UserInfo>
 
       {onRemoveUser &&
-        <div><CloseButton onClick={() => onRemoveUser(id)} /></div>
+        <div><CloseButton onClick={onRemoveUser} /></div>
       }
     </UserContainer>
   )
