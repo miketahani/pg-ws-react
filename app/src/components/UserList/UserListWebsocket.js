@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 import { UserList } from './UserList'
-import { DeleteUserModal } from './DeleteUserModal'
 
 import { useWebSocket } from '../../util/useWebSocket'
 
-import { getUserList, removeUser } from '../../util/userActions'
+import { getUserList } from '../../util/userActions'
 
 import { WS_NOTIFICATIONS_URL } from '../../config'
 
@@ -20,8 +19,8 @@ export function UserListWebsocket () {
     }
   }
 
-  // Subscribe to updates and reload the user list when a change is detected
-  const ws = useWebSocket(WS_NOTIFICATIONS_URL, requestUserList)
+  // Subscribe to updates and reload the user list when a change is detected.
+  useWebSocket(WS_NOTIFICATIONS_URL, requestUserList)
 
   // Hydrate initial user list
   useEffect(() => { requestUserList() }, [])

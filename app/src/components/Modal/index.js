@@ -16,8 +16,9 @@ export function Modal ({ children }) {
   const el = useRef(createModalElement())
 
   useEffect(() => {
-    modalRoot.appendChild(el.current)
-    return () => modalRoot.removeChild(el.current)
+    const node = el.current
+    modalRoot.appendChild(node)
+    return () => modalRoot.removeChild(node)
   }, [])
 
   if (!el.current) return null
